@@ -1,6 +1,6 @@
 # Course Material and FAQ for my Complete Node.js, Express and MongoDB Bootcamp
 
-This repo contains starter files and the finished project files for all the projects contained in the course (complete repo size is **288MB**).
+This repo contains starter files and the finished project files for all the projects contained in the course 
 
 Plus, I made all the [course slides available for download](theory-lectures.pdf), to make it easier to follow along the theory videos.
 
@@ -28,22 +28,9 @@ Plus, I made all the [course slides available for download](theory-lectures.pdf)
 
 **A:** Unfortunately, there is nothing I can do about it. The course is hosted on Udemy's platform, and sometimes they have technical issues like this one. Please just come back a bit later or [contact their support team](https://support.udemy.com/hc/en-us).
 
-### Q6: Videos are blurred / have low quality, can you fix it?
 
-**A:** Please open video settings and change the quality from 'Auto' to another value, for example 720p. If that doesn't help, please [contact the Udemy support team](https://support.udemy.com/hc/en-us).
 
 ### Q7: Are the videos downloadable?
 
 **A:** Yes, I made all videos downloadable on the Udemy platform so you can learn even without an internet connection. To download a video, use the settings icon in the right bottom corner of the video player.
 
-### Q8: I love your courses and want to get updates on new courses. How?
-
-**A:** First, you can subscribe to my email list [at my website](http://codingheroes.io/newsletter). Plus, I make important announcements on twitter [@jonasschmedtman](https://twitter.com/jonasschmedtman), so you should definitely follow me there 🔥
-
-### Q9: How do I get my certificate of completion?
-
-**A:** A certificate of completion is provided by Udemy after you complete 100% of the course. After completing the course, just click on the "Your progress" indicator in the top right-hand corner of the course page. If you want to change your name on the certificate, please [contact the Udemy support team](https://support.udemy.com/hc/en-us).
-
-### Q10: Do you accept pull requests?
-
-**A:** No, for the simple reason that I want this repository to contain the _exact_ same code that is shown in the videos. However, please feel free to add an issue if you found one.
