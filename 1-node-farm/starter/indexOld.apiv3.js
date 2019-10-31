@@ -135,107 +135,22 @@ console.log('Will read file!');
 //       }
 // });
 //////////server3
-// const server = http.createServer((req, res) => {
-//     console.log(req.url);
-//     const pathName = req.url;
-//     if (pathName === '/' || pathName === '/overview') {
-//         res.end('This is the OVERVIEW');
-//     } else if (pathName === '/product') {
-//         res.end('This is the PRODUCT');
-//     } else if (pathName === '/api') {
-//         console.log('${__dirname}');
-//         fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
-//             //  fs.readFile(`./dev-data/data.json`, 'utf-8', (err, data) => {
-//             const productData = JSON.parse(data);
-//             console.log(productData);
-//             res.writeHead(200, { 'Content-type': 'application/json' });
-//             res.end(data);
-//         });
-//     }
-//     else {
-//         res.writeHead(404, {
-//             'Content-type': 'text/html',
-//             'my-own-header': 'hello-world'
-//         });
-//         res.end('<h1>Page not found!</h1>');
-//     }
-// });
-
-// server.listen(8000, '127.0.0.1', () => {
-//     console.log('Listening to requests on port 8000');
-// });
-//////////server4
-// const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
-//     //  fs.readFile(`./dev-data/data.json`, 'utf-8', (err, data) => {
-//     const productData = JSON.parse(data);
-//     console.log(productData);
-// });//run only once and run at beginning
-// const dataObj = JSON.parse(data);
-// const server = http.createServer((req, res) => {
-//     console.log(req.url);
-//     const pathName = req.url;
-//     if (pathName === '/' || pathName === '/overview') {
-//         res.end('This is the OVERVIEW');
-//     } else if (pathName === '/product') {
-//         res.end('This is the PRODUCT');
-//     } else if (pathName === '/api') {
-//         res.writeHead(200, { 'Content-type': 'application/json' });
-//         res.end(data);
-//     }
-//     else {
-//         res.writeHead(404, {
-//             'Content-type': 'text/html',
-//             'my-own-header': 'hello-world'
-//         });
-//         res.end('<h1>Page not found!</h1>');
-//     }
-// });
-
-// // server.listen(8000, '127.0.0.1', () => {
-// //     console.log('Listening to requests on port 8000');
-// // });
-
-// server.listen(3000, '127.0.0.1', () => {
-//     console.log('Listening to requests on port 3000');
-// });
-//////////server5
-const replaceTemplate = (temp, product) => {
-    // let output=temp.replace('{%PRODUCTNAME%',produc.productName);//if not use regular expression,only replace first one
-    let output = temp.replace(/{%PRODUCTNAME%/g, product.productName);//use regular expression and para:g-golabally, will change all of them one by one
-    //out good practice to manuplate para-temp directly, so assign it to a varaible by "let" declration
-    output = output.replace(/{%IMAGE%/g, product.image);
-    output = output.replace(/{%PRICE%/g, product.price);
-    output = output.replace(/{%FROM%/g, product.from);
-    output = output.replace(/{%NUTRIENTS%/g, product.nutrients);
-    output = output.replace(/{%QUANTITY%/g, product.quantity);
-    output = output.replace(/{%DESCRIPTION%/g, product.description);
-    output = output.replace(/{%ID%/g, product.id);
-    
-    if(!product.organic) output=output.replace(/{%NOT_ORGANIC%}/g,'not-organic');
-    return output;
-}
-const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
-const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf-8');
-const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf-8');
-
-const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
-//console.log(data);
-const dataObj = JSON.parse(data);
 const server = http.createServer((req, res) => {
     console.log(req.url);
-
-    //overview page
     const pathName = req.url;
     if (pathName === '/' || pathName === '/overview') {
-        res.writeHead(200, { 'Content-type': 'text/html' });
-        const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el));
-        console.log(cardsHtml);
-        res.end(tempOverview);
+        res.end('This is the OVERVIEW');
     } else if (pathName === '/product') {
         res.end('This is the PRODUCT');
     } else if (pathName === '/api') {
-        res.writeHead(200, { 'Content-type': 'application/json' });
-        res.end(data);
+        console.log('${__dirname}');
+      fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
+        //  fs.readFile(`./dev-data/data.json`, 'utf-8', (err, data) => {
+            const productData = JSON.parse(data);
+            console.log(productData);
+            res.writeHead(200, {'Content-type': 'application/json' });
+            res.end(data);
+        });
     }
     else {
         res.writeHead(404, {
@@ -249,7 +164,3 @@ const server = http.createServer((req, res) => {
 server.listen(8000, '127.0.0.1', () => {
     console.log('Listening to requests on port 8000');
 });
-
-// server.listen(3000, '127.0.0.1', () => {
-//     console.log('Listening to requests on port 3000');
-// });
