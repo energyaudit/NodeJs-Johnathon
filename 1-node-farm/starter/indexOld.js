@@ -57,56 +57,7 @@ console.log('Will read file!');
 //   'utf-8'
 // );
 
-//////////server5
 
-// const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
-// const dataObj = JSON.parse(data);
-
-// const slugs = dataObj.map(el => slugify(el.productName, { lower: true }));
-// console.log(slugs);
-
-// const server = http.createServer((req, res) => {
-//   const { query, pathname } = url.parse(req.url, true);
-//////////server4
-// const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
-// const dataObj = JSON.parse(data);
-// const server = http.createServer((req, res) => {
-//     const pathName = req.url;
-//     // Overview page
-//     if (pathName === '/' || pathName === '/overview') {
-//         res.writeHead(200, {
-//             'Content-type': 'text/html'
-//         });
-
-//         const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el)).join('');
-//         const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml);
-//         res.end(output);
-
-//         // Product page
-//     } else if (pathName === '/product') {
-//         res.writeHead(200, {
-//             'Content-type': 'text/html'
-//         });
-//         const product = dataObj[query.id];
-//         const output = replaceTemplate(tempProduct, product);
-//         res.end(output);
-
-//         // API
-//     } else if (pathName === '/api') {
-//         res.writeHead(200, {
-//             'Content-type': 'application/json'
-//         });
-//         res.end(data);
-
-//         // Not found
-//     } else {
-//         res.writeHead(404, {
-//             'Content-type': 'text/html',
-//             'my-own-header': 'hello-world'
-//         });
-//         res.end('<h1>Page not found!</h1>');
-//     }
-// });
 /////server1
 // const server = http.createServer((req, res) => {
 //      console.log(req.url);
@@ -199,6 +150,56 @@ console.log('Will read file!');
 //     console.log('Listening to requests on port 3000');
 // });
 //////////server5
+
+// const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
+// const dataObj = JSON.parse(data);
+
+// const slugs = dataObj.map(el => slugify(el.productName, { lower: true }));
+// console.log(slugs);
+
+// const server = http.createServer((req, res) => {
+//   const { query, pathname } = url.parse(req.url, true);
+//////////server4
+// const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
+// const dataObj = JSON.parse(data);
+// const server = http.createServer((req, res) => {
+//     const pathName = req.url;
+//     // Overview page
+//     if (pathName === '/' || pathName === '/overview') {
+//         res.writeHead(200, {
+//             'Content-type': 'text/html'
+//         });
+
+//         const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el)).join('');
+//         const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml);
+//         res.end(output);
+
+//         // Product page
+//     } else if (pathName === '/product') {
+//         res.writeHead(200, {
+//             'Content-type': 'text/html'
+//         });
+//         const product = dataObj[query.id];
+//         const output = replaceTemplate(tempProduct, product);
+//         res.end(output);
+
+//         // API
+//     } else if (pathName === '/api') {
+//         res.writeHead(200, {
+//             'Content-type': 'application/json'
+//         });
+//         res.end(data);
+
+//         // Not found
+//     } else {
+//         res.writeHead(404, {
+//             'Content-type': 'text/html',
+//             'my-own-header': 'hello-world'
+//         });
+//         res.end('<h1>Page not found!</h1>');
+//     }
+// });
+//////////server6
 // const replaceTemplate = (temp, product) => {
 //     // let output=temp.replace('{%PRODUCTNAME}%',produc.productName);//if not use regular expression,only replace first one
 //     let output = temp.replace(/{%PRODUCTNAME}%/g, product.productName);//use regular expression and para:g-golabally, will change all of them one by one
@@ -250,7 +251,7 @@ console.log('Will read file!');
 //     console.log('Listening to requests on port 8000');
 // });
 
-//////////server6
+//////////server7
 // const replaceTemplate = (temp, product) => {
 //     // let output=temp.replace('{%PRODUCTNAME%',produc.productName);//if not use regular expression,only replace first one
 //     let output = temp.replace(/{%PRODUCTNAME%/g, product.productName);//use regular expression and para:g-golabally, will change all of them one by one
@@ -358,6 +359,9 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.htm
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 //console.log(data);
 const dataObj = JSON.parse(data);
+var path = require("path");
+console.log(". = %s", path.resolve("."));
+console.log("__dirname = %s", path.resolve(__dirname));
 //console.log(slugify('Fresh Avocados',{lower:true}));
 const slugs=dataObj.map(el=>slugify(el.productName,{lower:true}));
 console.log(slugs)
