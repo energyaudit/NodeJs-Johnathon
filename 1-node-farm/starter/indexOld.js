@@ -149,16 +149,43 @@ console.log('Will read file!');
 // server.listen(3000, '127.0.0.1', () => {
 //     console.log('Listening to requests on port 3000');
 // });
-//////////server5
+// //////////server5,html template hold danymic data,filling template
+// const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
+// const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf-8');
+// const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf-8');
 
 // const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
-// const dataObj = JSON.parse(data);
-
-// const slugs = dataObj.map(el => slugify(el.productName, { lower: true }));
-// console.log(slugs);
+// const dataObj = JSON.parse(data);//this is array
 
 // const server = http.createServer((req, res) => {
-//   const { query, pathname } = url.parse(req.url, true);
+//     const { query, pathname } = url.parse(req.url, true); //create object
+//        console.log("the routing url is:   ",req.url);
+//     //overview page
+
+//     if (pathname === '/' || pathname === '/overview') {
+//       res.writeHead(200, { 'Content-type': 'text/html' });
+//       res.end(tempOverview);
+//     } else if (pathname === '/product') {
+//       console.log(query);
+//       res.writeHead(200, { 'Content-type': 'text/html' });
+//       const product = dataObj[query.id]; //dataObj is array
+//       const output = replaceTemplate(tempProduct, product);
+//       res.end(output);
+//     } else if (pathname === '/api') {
+//       res.writeHead(200, { 'Content-type': 'application/json' });
+//       res.end(data);
+//     } else {
+//       res.writeHead(404, {
+//         'Content-type': 'text/html',
+//         'my-own-header': 'hello-world'
+//       });
+//       res.end('<h1>Page not found!</h1>');
+//     }
+//   });
+  
+//   server.listen(8000, '127.0.0.1', () => {
+//     console.log('Listening to requests on port 8000');
+//   });
 //////////server4
 // const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 // const dataObj = JSON.parse(data);
@@ -199,7 +226,7 @@ console.log('Will read file!');
 //         res.end('<h1>Page not found!</h1>');
 //     }
 // });
-//////////server6
+//////////server6, render each prduct replace %PRODUCT_CARDS% into overview page
 // const replaceTemplate = (temp, product) => {
 //     // let output=temp.replace('{%PRODUCTNAME}%',produc.productName);//if not use regular expression,only replace first one
 //     let output = temp.replace(/{%PRODUCTNAME}%/g, product.productName);//use regular expression and para:g-golabally, will change all of them one by one
@@ -307,7 +334,7 @@ console.log('Will read file!');
 //     console.log('Listening to requests on port 8000');
 // });
 
-// //////////server7
+// //////////server8
 
 // const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
 // const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf-8');
@@ -324,6 +351,7 @@ console.log('Will read file!');
    
 //     if (pathname === '/' || pathname === '/overview') {
 //         res.writeHead(200, { 'Content-type': 'text/html' });
+////map  take call back as para
 //         const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el)).join('');//not want array, use join into a big string
 //         const output=tempOverview.replace('{%PRODUCT_CARDS%}',cardsHtml)
 //         res.end(output);
