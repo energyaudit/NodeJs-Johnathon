@@ -232,13 +232,59 @@
 
 // // // /////////////////////////////////
 // // // /////////////////////////////////version10.after add return in front of each nested call back,we can chain them by promise resovle branch
+const fs = require('fs');
+const superagent = require('superagent');
+const readFilePro = file => {//Pro means promise
+  return new Promise((resolve, reject) => {
+    fs.readFile(file, (err, data) => {
+      if (err) reject('I could not find that file 😢');
+      resolve(data);//so this data is the resolve return
+    });
+  });
+};
+const writeFilePro = (file, data) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(file, data, err => {
+      if (err) reject('Could not write file 😢');
+      resolve('success');//this resolve branch not return any value,so just return success string then
+    });
+  });
+};
+const getDogPic = async () => {
+  //without error handling initial version,next step put all code into try{} then catch{}
+    const data = await readFilePro(`${__dirname}/dog.txt`);
+    console.log(`Breed: ${data}`);
+
+    const res1Pro = superagent.get(//promise 1
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );
+    const res2Pro = superagent.get(//promise 2
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );
+    const res3Pro = superagent.get(//promise 3
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );//pass promise array
+    const all = await Promise.all([res1Pro, res2Pro, res3Pro]);
+    //use map create new array of messAGE
+    const imgs = all.map(el => el.body.message);
+    console.log(imgs);
+
+    await writeFilePro('dog-img.txt', imgs.join('\n'));
+    console.log('Random dog image saved to file!');
+
+  return '2: READY 🐶';
+};
+// getDogPic();//working!amazing with such shorter simpler code compare to then
+// // // /////////////////////////////////
+// // // /////////////////////////////////version11.after add return in front of each nested call back,we can chain them by promise resovle branch
 // const fs = require('fs');
 // const superagent = require('superagent');
-// const readFilePro = file => {//Pro means promise
+// const readFilePro = file => {
+//   //Pro means promise
 //   return new Promise((resolve, reject) => {
 //     fs.readFile(file, (err, data) => {
 //       if (err) reject('I could not find that file 😢');
-//       resolve(data);//so this data is the resolve return
+//       resolve(data); //so this data is the resolve return
 //     });
 //   });
 // };
@@ -246,12 +292,13 @@
 //   return new Promise((resolve, reject) => {
 //     fs.writeFile(file, data, err => {
 //       if (err) reject('Could not write file 😢');
-//       resolve('success');//this resolve branch not return any value,so just return success string then
+//       resolve('success'); //this resolve branch not return any value,so just return success string then
 //     });
 //   });
 // };
 // const getDogPic = async () => {
 //   //without error handling initial version,next step put all code into try{} then catch{}
+//   try {
 //     const data = await readFilePro(`${__dirname}/dog.txt`);
 //     console.log(`Breed: ${data}`);
 
@@ -264,73 +311,31 @@
 //     const res3Pro = superagent.get(
 //       `https://dog.ceo/api/breed/${data}/images/random`
 //     );
-//     const all = await Promise.all([res1Pro, res2Pro, res3Pro]);
+//     const all = await Promise.all([res1Pro, res2Pro, res3Pro]); //second promise
 //     const imgs = all.map(el => el.body.message);
 //     console.log(imgs);
 
-//     await writeFilePro('dog-img.txt', imgs.join('\n'));
+//     await writeFilePro('dog-img.txt', imgs.join('\n')); //third promise
 //     console.log('Random dog image saved to file!');
-
+//   } catch (err) {
+//     console.log(err);
+//     throw err; //if not throw then promise not goto reject
+//   }
 //   return '2: READY 🐶';
 // };
-// getDogPic();//working!amazing with such shorter simpler code compare to then
-// // // /////////////////////////////////
-// // // /////////////////////////////////version10.after add return in front of each nested call back,we can chain them by promise resovle branch
-const fs = require('fs');
-const superagent = require('superagent');
-const readFilePro = file => {
-  //Pro means promise
-  return new Promise((resolve, reject) => {
-    fs.readFile(file, (err, data) => {
-      if (err) reject('I could not find that file 😢');
-      resolve(data); //so this data is the resolve return
-    });
-  });
-};
-const writeFilePro = (file, data) => {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(file, data, err => {
-      if (err) reject('Could not write file 😢');
-      resolve('success'); //this resolve branch not return any value,so just return success string then
-    });
-  });
-};
-const getDogPic = async () => {
-  //without error handling initial version,next step put all code into try{} then catch{}
-  try {
-    const data = await readFilePro(`${__dirname}/dog.txt`);
-    console.log(`Breed: ${data}`);
 
-    const res1Pro = superagent.get(
-      `https://dog.ceo/api/breed/${data}/images/random`
-    );
-    const res2Pro = superagent.get(
-      `https://dog.ceo/api/breed/${data}/images/random`
-    );
-    const res3Pro = superagent.get(
-      `https://dog.ceo/api/breed/${data}/images/random`
-    );
-    const all = await Promise.all([res1Pro, res2Pro, res3Pro]); //second promise
-    const imgs = all.map(el => el.body.message);
-    console.log(imgs);
-
-    await writeFilePro('dog-img.txt', imgs.join('\n')); //third promise
-    console.log('Random dog image saved to file!');
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-  return '2: READY 🐶';
-};
-
-//getDogPic();//working!amazing with such shorter simpler code compare to then
-console.log('1: Will get dog pics!');
-getDogPic().then(x => {
-  console.log(x);
-});
-console.log('3: Done getting dog pics!');
+// //getDogPic();//working!amazing with such shorter simpler code compare to then
+// console.log('1: Will get dog pics!');
+// getDogPic()
+//   .then(x => {
+//     console.log(x);
+//     console.log('3: Done getting dog pics!');
+//   })
+//   .catch(err => {//next step, will change this part to async too
+//     console.log('ERROR 💥');
+//   });
 // // // // /////////////////////////////////
-// // // // /////////////////////////////////version?
+// // // // /////////////////////////////////version11,change final part to async
 // const fs = require('fs');
 // const superagent = require('superagent');
 
@@ -383,7 +388,7 @@ console.log('3: Done getting dog pics!');
 // (async () => {
 //   try {
 //     console.log('1: Will get dog pics!');
-//     const x = await getDogPic();
+//     const x = await getDogPic();//retuen propmise
 //     console.log(x);
 //     console.log('3: Done getting dog pics!');
 //   } catch (err) {
