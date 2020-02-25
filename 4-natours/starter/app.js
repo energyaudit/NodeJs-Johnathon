@@ -940,9 +940,430 @@
 // });
 /////////////////////////////////
 /////////////////////////////////version 9,slip files into dedicated route module folder and 
+// const express = require('express');
+// const fs = require('fs');
+// const morgan = require('morgan');
+// // 1) MIDDLEWARES
+
+// const app = express(); //assign the function to app
+// app.use(morgan('dev'));
+// app.use(express.json()); //middleware,modify the incoming data
+// app.use((req, res, next) => {
+//   //next is third parameter which next function in pipeline
+//   console.log('Hello from the middleware 👋');
+//   next();
+// }); //middleware declare should at top before others
+
+// app.use((req, res, next) => {
+//   req.requestTime = new Date().toISOString();
+//   next();
+// });
+// const tours = JSON.parse(
+//   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
+// ); //use fs here,so goto top require it
+// //route handler,folowing route handler all cut into route module 
+// const getAllTours = (req, res) => {
+//   console.log(req.requestTime);
+//   res.status(200).json({
+//     status: 'success',
+//     requestedAt: req.requestTime,
+//     results: tours.length,
+//     data: {
+//       tours
+//     }
+//   });
+// };
+// const getTour = (req, res) => {
+//   //app.get('/api/v1/tours/:id:y?' y? means optional
+//   console.log(req.params); //:id means define id as para,and will return value from req
+//   //from above log you can see the id got is string,use js trick of *1 to coerce into integer
+//   const id = req.params.id * 1;
+//   //handle if request out of range id
+//   if (id > tours.length) {
+//     return res.status(404).json({
+//       status: 'fail',
+//       message: 'Invalid ID'
+//     });
+//   }
+//   const tour = tours.find(el => el.id === id); //find is array method loop array current elemnt to find
+//   // if(id>tours.length){//if cannot find this id
+//   if (!tour) {
+//     //if cannot find this id of tour
+//     return res.status(404).json({
+//       status: 'fail',
+//       message: 'Invalid ID'
+//     });
+//   }
+
+//   res.status(200).json({
+//     status: 'success',
+//     data: {
+//       tours: tour
+//     }
+//   });
+// };
+// const createTour = (req, res) => {
+//   //need MIDDLEWARES so go up to get it
+//   // console.log(req.body);
+//   const newId = tours[tours.length - 1].id + 1;
+//   const newTour = Object.assign({ id: newId }, req.body); //Object.assign merge 2 object,to merge the newid into it
+//   tours.push(newTour);
+//   //tours is object so need stringify to make it can write into .json file
+//   fs.writeFile(
+//     `${__dirname}/dev-data/data/tours-simple.json`,
+//     JSON.stringify(tours),
+//     err => {
+//       //this call back has only err as para
+//       res.status(201).json({
+//         status: 'success',
+//         data: {
+//           tour: newTour
+//         }
+//       });
+//     }
+//   );
+//   // res.send('Done');//this must comment out ,if response send twice,error
+//   //to key tour value is a object
+// };
+// const updateTour = (req, res) => {
+//   if (req.params.id * 1 > tours.length) {
+//     //if cannot find this id of tour
+//     return res.status(404).json({
+//       status: 'fail',
+//       message: 'Invalid ID'
+//     });
+//   }
+//   //only put place hodler ,not real patch
+//   res.status(201).json({
+//     status: 'success',
+//     data: {
+//       tour: '<Update tour here>'
+//     }
+//   });
+// };
+// const deleteTour = (req, res) => {
+//   if (req.params.id * 1 > tours.length) {
+//     //if cannot find this id of tour
+//     return res.status(404).json({
+//       status: 'fail',
+//       message: 'Invalid ID'
+//     });
+//   }
+//   //only put place hodler ,not real patch
+//   res.status(204).json({
+//     status: 'success',
+//     data: null
+//   });
+// };
+
+// const getAllUsers = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'This route is not yet defined!'
+//   });
+// };
+// const createUser = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'This route is not yet defined!'
+//   });
+// };
+// const getUser = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'This route is not yet defined!'
+//   });
+// };
+// const updateUser = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'This route is not yet defined!'
+//   });
+// };
+// const deleteUser = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'This route is not yet defined!'
+//   });
+// };
+
+// //use route so an change version,get and post can wirte together
+// //seperate handler and route to export and reuse later too
+// // 3) ROUTES
+// //use middlewear to replace tour route,replace app to tourRouter
+//  //create sub app
+// const tourRouter = express.Router();
+// const userRouter = express.Router();
+
+// //app
+// tourRouter
+//   .route('/')
+//   .get(getAllTours)
+//   .post(createTour);
+
+// //app
+// tourRouter
+//   .route('/:id')
+//   .get(getTour)
+//   .patch(updateTour)
+//   .delete(deleteTour);
+// //app
+// userRouter
+//   .route('/')
+//   .get(getAllUsers)
+//   .post(createUser);
+
+// //app
+// userRouter
+//   .route('/:id')
+//   .get(getUser)
+//   .patch(updateUser)
+//   .delete(deleteUser);
+//   app.use('/api/v1/tours', tourRouter);
+//   app.use('/api/v1/users', userRouter);
+// //create server
+// const port = 3000;
+
+// app.listen(port, () => {
+//   console.log(`app running on port ${port}`);
+// });
+
+/////////////////////////////////
+/////////////////////////////////version 10,replace code lines with modules
+// const express = require('express');
+// // const fs = require('fs');//moved to tourRoutes.js
+// const morgan = require('morgan');
+// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
+// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+
+// // 1) MIDDLEWARES
+
+// const app = express(); //assign the function to app
+// app.use(morgan('dev'));
+// app.use(express.json()); //middleware,modify the incoming data
+// app.use((req, res, next) => {
+//   //next is third parameter which next function in pipeline
+//   console.log('Hello from the middleware 👋');
+//   next();
+// }); //middleware declare should at top before others
+
+// app.use((req, res, next) => {
+//   req.requestTime = new Date().toISOString();
+//   next();
+// });
+// // const tours = JSON.parse(
+// //   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
+// // ); //use fs here,so goto top require it
+// // //route handler,folowing route handler all cut into route module 
+// // const getAllTours = (req, res) => {
+// //   console.log(req.requestTime);
+// //   res.status(200).json({
+// //     status: 'success',
+// //     requestedAt: req.requestTime,
+// //     results: tours.length,
+// //     data: {
+// //       tours
+// //     }
+// //   });
+// // };
+// // const getTour = (req, res) => {
+// //   //app.get('/api/v1/tours/:id:y?' y? means optional
+// //   console.log(req.params); //:id means define id as para,and will return value from req
+// //   //from above log you can see the id got is string,use js trick of *1 to coerce into integer
+// //   const id = req.params.id * 1;
+// //   //handle if request out of range id
+// //   if (id > tours.length) {
+// //     return res.status(404).json({
+// //       status: 'fail',
+// //       message: 'Invalid ID'
+// //     });
+// //   }
+// //   const tour = tours.find(el => el.id === id); //find is array method loop array current elemnt to find
+// //   // if(id>tours.length){//if cannot find this id
+// //   if (!tour) {
+// //     //if cannot find this id of tour
+// //     return res.status(404).json({
+// //       status: 'fail',
+// //       message: 'Invalid ID'
+// //     });
+// //   }
+
+// //   res.status(200).json({
+// //     status: 'success',
+// //     data: {
+// //       tours: tour
+// //     }
+// //   });
+// // };
+// // const createTour = (req, res) => {
+// //   //need MIDDLEWARES so go up to get it
+// //   // console.log(req.body);
+// //   const newId = tours[tours.length - 1].id + 1;
+// //   const newTour = Object.assign({ id: newId }, req.body); //Object.assign merge 2 object,to merge the newid into it
+// //   tours.push(newTour);
+// //   //tours is object so need stringify to make it can write into .json file
+// //   fs.writeFile(
+// //     `${__dirname}/dev-data/data/tours-simple.json`,
+// //     JSON.stringify(tours),
+// //     err => {
+// //       //this call back has only err as para
+// //       res.status(201).json({
+// //         status: 'success',
+// //         data: {
+// //           tour: newTour
+// //         }
+// //       });
+// //     }
+// //   );
+// //   // res.send('Done');//this must comment out ,if response send twice,error
+// //   //to key tour value is a object
+// // };
+// // const updateTour = (req, res) => {
+// //   if (req.params.id * 1 > tours.length) {
+// //     //if cannot find this id of tour
+// //     return res.status(404).json({
+// //       status: 'fail',
+// //       message: 'Invalid ID'
+// //     });
+// //   }
+// //   //only put place hodler ,not real patch
+// //   res.status(201).json({
+// //     status: 'success',
+// //     data: {
+// //       tour: '<Update tour here>'
+// //     }
+// //   });
+// // };
+// // const deleteTour = (req, res) => {
+// //   if (req.params.id * 1 > tours.length) {
+// //     //if cannot find this id of tour
+// //     return res.status(404).json({
+// //       status: 'fail',
+// //       message: 'Invalid ID'
+// //     });
+// //   }
+// //   //only put place hodler ,not real patch
+// //   res.status(204).json({
+// //     status: 'success',
+// //     data: null
+// //   });
+// // };
+
+// // const getAllUsers = (req, res) => {
+// //   res.status(500).json({
+// //     status: 'error',
+// //     message: 'This route is not yet defined!'
+// //   });
+// // };
+// // const createUser = (req, res) => {
+// //   res.status(500).json({
+// //     status: 'error',
+// //     message: 'This route is not yet defined!'
+// //   });
+// // };
+// // const getUser = (req, res) => {
+// //   res.status(500).json({
+// //     status: 'error',
+// //     message: 'This route is not yet defined!'
+// //   });
+// // };
+// // const updateUser = (req, res) => {
+// //   res.status(500).json({
+// //     status: 'error',
+// //     message: 'This route is not yet defined!'
+// //   });
+// // };
+// // const deleteUser = (req, res) => {
+// //   res.status(500).json({
+// //     status: 'error',
+// //     message: 'This route is not yet defined!'
+// //   });
+// // };
+
+
+// //seperate handler and route to export and reuse later too
+// // 3) ROUTES
+//   app.use('/api/v1/tours', tourRouter);//all following lines replaced by these 2 lines now
+//   app.use('/api/v1/users', userRouter);
+// //use middlewear to replace tour route,replace app to tourRouter
+//  //following tourRoutes lines replaced by module so comment them out
+// // const tourRouter = express.Router();
+// // const userRouter = express.Router();
+
+// // //app
+// // tourRouter
+// //   .route('/')
+// //   .get(getAllTours)
+// //   .post(createTour);
+
+// // //app
+// // tourRouter
+// //   .route('/:id')
+// //   .get(getTour)
+// //   .patch(updateTour)
+// //   .delete(deleteTour);
+// // //app
+// // userRouter
+// //   .route('/')
+// //   .get(getAllUsers)
+// //   .post(createUser);
+
+// // //app
+// // userRouter
+// //   .route('/:id')
+// //   .get(getUser)
+// //   .patch(updateUser)
+// //   .delete(deleteUser);
+
+// //create server
+// const port = 3000;
+
+// app.listen(port, () => {
+//   console.log(`app running on port ${port}`);
+// });
+
+/////////////////////////////////
+/////////////////////////////////version 11,replace code lines with modules,delete the comment out licensed
+// const express = require('express');
+// // const fs = require('fs');//moved to tourRoutes.js
+// const morgan = require('morgan');
+// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
+// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+
+// // 1) MIDDLEWARES
+
+// const app = express(); //assign the function to app
+// app.use(morgan('dev'));
+// app.use(express.json()); //middleware,modify the incoming data
+// app.use((req, res, next) => {
+//   //next is third parameter which next function in pipeline
+//   console.log('Hello from the middleware 👋');
+//   next();
+// }); //middleware declare should at top before others
+
+// app.use((req, res, next) => {
+//   req.requestTime = new Date().toISOString();
+//   next();
+// });
+
+// // 3) ROUTES
+//   app.use('/api/v1/tours', tourRouter);//all following lines replaced by these 2 lines now
+//   app.use('/api/v1/users', userRouter);
+
+// //create server
+// const port = 3000;
+// app.listen(port, () => {
+//   console.log(`app running on port ${port}`);
+// });
+
+/////////////////////////////////
+/////////////////////////////////version 12,splict the server lines into server.js,so need export app first for server.js to import app
 const express = require('express');
-const fs = require('fs');
+// const fs = require('fs');//moved to tourRoutes.js
 const morgan = require('morgan');
+const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
+const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+
 // 1) MIDDLEWARES
 
 const app = express(); //assign the function to app
@@ -958,175 +1379,18 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
-); //use fs here,so goto top require it
-//route handler,folowing route handler all cut into route module 
-const getAllTours = (req, res) => {
-  console.log(req.requestTime);
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-};
-const getTour = (req, res) => {
-  //app.get('/api/v1/tours/:id:y?' y? means optional
-  console.log(req.params); //:id means define id as para,and will return value from req
-  //from above log you can see the id got is string,use js trick of *1 to coerce into integer
-  const id = req.params.id * 1;
-  //handle if request out of range id
-  if (id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
-  const tour = tours.find(el => el.id === id); //find is array method loop array current elemnt to find
-  // if(id>tours.length){//if cannot find this id
-  if (!tour) {
-    //if cannot find this id of tour
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tours: tour
-    }
-  });
-};
-const createTour = (req, res) => {
-  //need MIDDLEWARES so go up to get it
-  // console.log(req.body);
-  const newId = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({ id: newId }, req.body); //Object.assign merge 2 object,to merge the newid into it
-  tours.push(newTour);
-  //tours is object so need stringify to make it can write into .json file
-  fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
-    JSON.stringify(tours),
-    err => {
-      //this call back has only err as para
-      res.status(201).json({
-        status: 'success',
-        data: {
-          tour: newTour
-        }
-      });
-    }
-  );
-  // res.send('Done');//this must comment out ,if response send twice,error
-  //to key tour value is a object
-};
-const updateTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    //if cannot find this id of tour
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
-  //only put place hodler ,not real patch
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: '<Update tour here>'
-    }
-  });
-};
-const deleteTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    //if cannot find this id of tour
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
-  //only put place hodler ,not real patch
-  res.status(204).json({
-    status: 'success',
-    data: null
-  });
-};
-
-const getAllUsers = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
-  });
-};
-const createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
-  });
-};
-const getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
-  });
-};
-const updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
-  });
-};
-const deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
-  });
-};
-
-//use route so an change version,get and post can wirte together
-//seperate handler and route to export and reuse later too
 // 3) ROUTES
-//use middlewear to replace tour route,replace app to tourRouter
- //create sub app
-const tourRouter = express.Router();
-const userRouter = express.Router();
-
-//app
-tourRouter
-  .route('/')
-  .get(getAllTours)
-  .post(createTour);
-
-//app
-tourRouter
-  .route('/:id')
-  .get(getTour)
-  .patch(updateTour)
-  .delete(deleteTour);
-//app
-userRouter
-  .route('/')
-  .get(getAllUsers)
-  .post(createUser);
-
-//app
-userRouter
-  .route('/:id')
-  .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
-  app.use('/api/v1/tours', tourRouter);
+  app.use('/api/v1/tours', tourRouter);//all following lines replaced by these 2 lines now
   app.use('/api/v1/users', userRouter);
-//create server
-const port = 3000;
 
-app.listen(port, () => {
-  console.log(`app running on port ${port}`);
-});
+  module.exports=app;
+//create server,following server lines to be commented out ,split into server.js
+// const port = 3000;//make sure comment out these lines or not the server.js will have 3000 already in use error message
+// app.listen(port, () => {
+//   console.log(`app running on port ${port}`);
+// });
+
 /////////////////////////////////
 /////////////////////////////////version?
 // const express = require('express');
