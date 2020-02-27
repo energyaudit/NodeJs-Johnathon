@@ -1358,6 +1358,71 @@
 
 /////////////////////////////////
 /////////////////////////////////version 12,splict the server lines into server.js,so need export app first for server.js to import app
+// const express = require('express');
+// // const fs = require('fs');//moved to tourRoutes.js
+// const morgan = require('morgan');
+// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
+// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+
+// // 1) MIDDLEWARES
+
+// const app = express(); //assign the function to app
+// app.use(morgan('dev'));
+// app.use(express.json()); //middleware,modify the incoming data
+// app.use((req, res, next) => {
+//   //next is third parameter which next function in pipeline
+//   console.log('Hello from the middleware 👋');
+//   next();
+// }); //middleware declare should at top before others
+
+// app.use((req, res, next) => {
+//   req.requestTime = new Date().toISOString();
+//   next();
+// });
+
+// // 3) ROUTES
+//   app.use('/api/v1/tours', tourRouter);//all following lines replaced by these 2 lines now
+//   app.use('/api/v1/users', userRouter);
+
+//   module.exports=app;
+// //create server,following server lines to be commented out ,split into server.js
+// // const port = 3000;//make sure comment out these lines or not the server.js will have 3000 already in use error message
+// // app.listen(port, () => {
+// //   console.log(`app running on port ${port}`);
+// // });
+////////////////////////////////
+/////////////////////////////////version 13,make static files have routes
+// const express = require('express');
+// // const fs = require('fs');//moved to tourRoutes.js
+// const morgan = require('morgan');
+// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
+// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+
+// // 1) MIDDLEWARES
+
+// const app = express(); //assign the function to app
+// app.use(morgan('dev'));
+// app.use(express.json()); //middleware,modify the incoming data
+//  app.use(express.static(`${__dirname}/public`));//make static files have routes
+// app.use((req, res, next) => {
+//   //next is third parameter which next function in pipeline
+//   console.log('Hello from the middleware 👋');
+//   next();
+// }); //middleware declare should at top before others
+
+// app.use((req, res, next) => {
+//   req.requestTime = new Date().toISOString();
+//   next();
+// });
+
+// // 3) ROUTES
+//   app.use('/api/v1/tours', tourRouter);//all following lines replaced by these 2 lines now
+//   app.use('/api/v1/users', userRouter);
+
+//   module.exports=app;
+
+//   ////////////////////////////////
+// /////////////////////////////////version 14,read environment from config.env
 const express = require('express');
 // const fs = require('fs');//moved to tourRoutes.js
 const morgan = require('morgan');
@@ -1367,8 +1432,13 @@ const userRouter = require('./routes/userRoutes');//following userRoutes lines w
 // 1) MIDDLEWARES
 
 const app = express(); //assign the function to app
-app.use(morgan('dev'));
+app.use(morgan('dev'));//comment out and only use if env=development,if not comment out will have port 3000 already in use,so only one morgan allowed
+
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+  }
 app.use(express.json()); //middleware,modify the incoming data
+ app.use(express.static(`${__dirname}/public`));//make static files have routes
 app.use((req, res, next) => {
   //next is third parameter which next function in pipeline
   console.log('Hello from the middleware 👋');
@@ -1385,12 +1455,6 @@ app.use((req, res, next) => {
   app.use('/api/v1/users', userRouter);
 
   module.exports=app;
-//create server,following server lines to be commented out ,split into server.js
-// const port = 3000;//make sure comment out these lines or not the server.js will have 3000 already in use error message
-// app.listen(port, () => {
-//   console.log(`app running on port ${port}`);
-// });
-
 /////////////////////////////////
 /////////////////////////////////version?
 // const express = require('express');

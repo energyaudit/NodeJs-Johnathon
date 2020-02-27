@@ -107,15 +107,28 @@ const fs = require('fs');
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
+//use middleware to write the id valid check fucntion
 exports.checkID = (req, res, next, val) => {
   console.log(`Tour id is :${val}`); //check if function running
   if (req.params.id * 1 > tours.length) {
-    //if cannot find this id of tour
+    //if cannot find this id of tour,the return is critical ornot even response 404 still goto next step
+
     return res.status(404).json({
       status: 'fail',
       message: 'Invalid ID'
     });
   }
+  next();
+};
+
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Missing name or price'
+    });
+  }
+  //everything ok then goto next()
   next();
 };
 exports.getAllTours = (req, res) => {
@@ -135,12 +148,12 @@ exports.getTour = (req, res) => {
   //from above log you can see the id got is string,use js trick of *1 to coerce into integer
   const id = req.params.id * 1;
   //handle if request out of range id
-  if (id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
+  // if (id > tours.length) {
+  //   return res.status(404).json({
+  //     status: 'fail',
+  //     message: 'Invalid ID'
+  //   });
+  // }
   const tour = tours.find(el => el.id === id); //find is array method loop array current elemnt to find
   // if(id>tours.length){//if cannot find this id
   if (!tour) {
