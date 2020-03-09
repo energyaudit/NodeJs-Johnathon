@@ -1433,7 +1433,7 @@ const userRouter = require('./routes/userRoutes');//following userRoutes lines w
 
 const app = express(); //assign the function to app
 app.use(morgan('dev'));//comment out and only use if env=development,if not comment out will have port 3000 already in use,so only one morgan allowed
-
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
   }
