@@ -55,9 +55,10 @@ exports.getTour = async (req, res) => {
 
 exports.createTour = async (req, res) => {
   try {
+    //document method
     // const newTour = new Tour({})
     // newTour.save()
-
+    //req.body from post is the para passed,create return promise save to newTour variable
     const newTour = await Tour.create(req.body);
 
     res.status(201).json({

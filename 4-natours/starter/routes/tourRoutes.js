@@ -263,22 +263,44 @@
 /////////////////////////////////
 /////////////////////////////////version 4,delete comment out lines,move id scope verify lines to function
 
+// const express = require('express');
+// const tourController = require('./../controllers/tourController');
+// const router = express.Router(); //by convention use router only not tourRouter,so need change following corresponding to Router too.
+// // const fs = require('fs');
+// //following middlewear not works for user,comment out to replace by  id verify function
+// // router.param('id', (req, res, next, val) => {//val is value holder of id param
+// //   console.log(`Tour id is :${val}`);
+// //   next();//make sure passs to next function in pipeline
+// // });
+// //above router.param liens replaced by following one line
+// router.param('id', tourController.checkID);
+// router
+//   .route('/')
+//   .get(tourController.getAllTours)
+//   //.post(tourController.createTour);//comment out
+//   .post(tourController.checkBody, tourController.createTour);
+
+// router
+//   .route('/:id')
+//   .get(tourController.getTour)
+//   .patch(tourController.updateTour)
+//   .delete(tourController.deleteTour);
+
+// module.exports = router; //if have only one thing to export use module.exports
+/////////////////////////////////
+/////////////////////////////////version 5,delete comment out lines for read date from json file,use mongdodb now
+
 const express = require('express');
 const tourController = require('./../controllers/tourController');
 const router = express.Router(); //by convention use router only not tourRouter,so need change following corresponding to Router too.
-// const fs = require('fs');
-//following middlewear not works for user,comment out to replace by  id verify function
-// router.param('id', (req, res, next, val) => {//val is value holder of id param
-//   console.log(`Tour id is :${val}`);
-//   next();//make sure passs to next function in pipeline
-// });
-//above router.param liens replaced by following one line
-router.param('id', tourController.checkID);
+//comment out by error :invalid param() call for id,search param() to here
+// router.param('id', tourController.checkID);
 router
   .route('/')
   .get(tourController.getAllTours)
-  //.post(tourController.createTour);//comment out
-  .post(tourController.checkBody, tourController.createTour);
+  //.post(tourController.checkBody, tourController.createTour);
+  //delete checkBody from tourcontroller
+  .post(tourController.createTour);
 
 router
   .route('/:id')
