@@ -547,10 +547,274 @@
 /////////////////////////////////
 /////////////////////////////////version 7,read documents from mongodb.put getalltours codes lines into try{}
 
+// const Tour = require('./../models/tourModel');
+// // exports.getAllTours = (req, res) => {//delete and add async
+// exports.getAllTours = async (req, res) => {
+//   try {
+//     const tours = await Tour.find(); //return a promise await-and value is array, so need goto function top line add async
+//     //find also change into json format for us,next step put all these lines into try{}
+//     res.status(200).json({
+//       status: 'success',
+//       requestedAt: req.requestTime,
+//       results: tours.length,
+//       data: {
+//         tours
+//       }
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+// exports.getTour = async (req, res) => {
+//   try {
+//     //req.params.id is the id in file tourRoute.js router.route('/:id')
+//     const tour = await Tour.findById(req.params.id);
+//     // findById(req.params.id) is shortcut of Tour.findOne({ _id: req.params.id })
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         tour
+//       }
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+// exports.createTour = async (req, res) => {
+//   try {
+//     //document method
+//     // const newTour = new Tour({})
+//     // newTour.save()//Model.prototype.save(),means use for instance not class
+//     //req.body from post is the para passed,create return promise save to newTour variable
+//     const newTour = await Tour.create(req.body);
+
+//     res.status(201).json({
+//       status: 'success',
+//       data: {
+//         tour: newTour
+//       }
+//     });
+//   } catch (err) {
+//     res.status(400).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+
+// exports.updateTour = (req, res) => {
+//   res.status(201).json({
+//     status: 'success'
+//   });
+// };
+// exports.deleteTour = (req, res) => {
+//   res.status(204).json({
+//     status: 'success',
+//     data: null
+//   });
+// };
+/////////////////////////////////
+/////////////////////////////////version 8,update documents from mongodb.
+// const Tour = require('./../models/tourModel');
+// // exports.getAllTours = (req, res) => {//delete and add async
+// exports.getAllTours = async (req, res) => {
+//   try {
+//     const tours = await Tour.find(); //return a promise await-and value is array, so need goto function top line add async
+//     //find also change into json format for us,next step put all these lines into try{}
+//     res.status(200).json({
+//       status: 'success',
+//       requestedAt: req.requestTime,
+//       results: tours.length,
+//       data: {
+//         tours
+//       }
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+// exports.getTour = async (req, res) => {
+//   try {
+//     //req.params.id is the id in file tourRoute.js router.route('/:id')
+//     const tour = await Tour.findById(req.params.id);
+//     // findById(req.params.id) is shortcut of Tour.findOne({ _id: req.params.id })
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         tour
+//       }
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+// exports.createTour = async (req, res) => {
+//   try {
+//     //document method
+//     // const newTour = new Tour({})
+//     // newTour.save()
+//     //req.body from post is the para passed,create return promise save to newTour variable
+//     const newTour = await Tour.create(req.body);
+
+//     res.status(201).json({
+//       status: 'success',
+//       data: {
+//         tour: newTour
+//       }
+//     });
+//   } catch (err) {
+//     res.status(400).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+
+// exports.updateTour = async (req, res) => {
+//   try {
+//     const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+//       new: true,
+//       runValidators: true
+//     });
+
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         tour
+//       }
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+// exports.deleteTour = (req, res) => {
+//   res.status(204).json({
+//     status: 'success',
+//     data: null
+//   });
+// };
+/////////////////////////////////
+/////////////////////////////////version 9,delete documents from mongodb.
+
+// const Tour = require('./../models/tourModel');
+// // exports.getAllTours = (req, res) => {//delete and add async
+// exports.getAllTours = async (req, res) => {
+//   try {
+//     const tours = await Tour.find(); //return a promise await-and value is array, so need goto function top line add async
+//     //find also change into json format for us,next step put all these lines into try{}
+//     res.status(200).json({
+//       status: 'success',
+//       requestedAt: req.requestTime,
+//       results: tours.length,
+//       data: {
+//         tours
+//       }
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+// exports.getTour = async (req, res) => {
+//   try {
+//     //req.params.id is the id in file tourRoute.js router.route('/:id')
+//     const tour = await Tour.findById(req.params.id);
+//     // findById(req.params.id) is shortcut of Tour.findOne({ _id: req.params.id })
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         tour
+//       }
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+// exports.createTour = async (req, res) => {
+//   try {
+//     //document method
+//     // const newTour = new Tour({})
+//     // newTour.save()
+//     //req.body from post is the para passed,create return promise save to newTour variable
+//     const newTour = await Tour.create(req.body);
+
+//     res.status(201).json({
+//       status: 'success',
+//       data: {
+//         tour: newTour
+//       }
+//     });
+//   } catch (err) {
+//     res.status(400).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+
+// exports.updateTour = async (req, res) => {
+//   try {
+//     const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+//       new: true,
+//       runValidators: true
+//     });
+
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         tour
+//       }
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+// exports.deleteTour = async (req, res) => {
+//   try {
+//     await Tour.findByIdAndDelete(req.params.id);
+
+//     res.status(204).json({
+//       status: 'success',
+//       data: null
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err
+//     });
+//   }
+// };
+/////////////////////////////////
+/////////////////////////////////version 10,making API better, Filtering.
+
 const Tour = require('./../models/tourModel');
 // exports.getAllTours = (req, res) => {//delete and add async
 exports.getAllTours = async (req, res) => {
   try {
+    console.log(req.query);
     const tours = await Tour.find(); //return a promise await-and value is array, so need goto function top line add async
     //find also change into json format for us,next step put all these lines into try{}
     res.status(200).json({
@@ -569,19 +833,23 @@ exports.getAllTours = async (req, res) => {
   }
 };
 exports.getTour = async (req, res) => {
-  console.log(req.params); //:id means define id as para,and will return value from req
-
-  const id = req.params.id * 1;
+  try {
+    //req.params.id is the id in file tourRoute.js router.route('/:id')
+    const tour = await Tour.findById(req.params.id);
+    // findById(req.params.id) is shortcut of Tour.findOne({ _id: req.params.id })
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour
+      }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    });
+  }
 };
-//following lines change to mongdb create document
-// exports.createTour = (req, res) => {
-//   //document method
-//   // const newTour=new Tour({})
-//   // newTour.save()
-//   res.status(201).json({
-//     status: 'success'
-//   });
-// };
 exports.createTour = async (req, res) => {
   try {
     //document method
@@ -604,16 +872,40 @@ exports.createTour = async (req, res) => {
   }
 };
 
-exports.updateTour = (req, res) => {
-  res.status(201).json({
-    status: 'success'
-  });
+exports.updateTour = async (req, res) => {
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour
+      }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    });
+  }
 };
-exports.deleteTour = (req, res) => {
-  res.status(204).json({
-    status: 'success',
-    data: null
-  });
+exports.deleteTour = async (req, res) => {
+  try {
+    await Tour.findByIdAndDelete(req.params.id);
+
+    res.status(204).json({
+      status: 'success',
+      data: null
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    });
+  }
 };
 /////////////////////////////////
 /////////////////////////////////version ?
