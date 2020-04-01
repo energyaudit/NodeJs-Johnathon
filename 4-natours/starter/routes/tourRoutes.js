@@ -290,11 +290,36 @@
 /////////////////////////////////
 /////////////////////////////////version 5,delete comment out lines for read date from json file,use mongdodb now
 
+// const express = require('express');
+// const tourController = require('./../controllers/tourController');
+// const router = express.Router(); //by convention use router only not tourRouter,so need change following corresponding to Router too.
+// //comment out by error :invalid param() call for id,search param() to here
+// // router.param('id', tourController.checkID);
+// router
+//   .route('/')
+//   .get(tourController.getAllTours)
+//   //.post(tourController.checkBody, tourController.createTour);
+//   //delete checkBody from tourcontroller
+//   .post(tourController.createTour);
+
+// router
+//   .route('/:id')
+//   .get(tourController.getTour)
+//   .patch(tourController.updateTour)
+//   .delete(tourController.deleteTour);
+
+// module.exports = router; //if have only one thing to export use module.exports
+/////////////////////////////////
+/////////////////////////////////version 5,delete comment out lines for read date from json file,use mongdodb now
+
 const express = require('express');
 const tourController = require('./../controllers/tourController');
 const router = express.Router(); //by convention use router only not tourRouter,so need change following corresponding to Router too.
 //comment out by error :invalid param() call for id,search param() to here
 // router.param('id', tourController.checkID);
+router
+  .route('/top-5-cheap')
+  .get(tourController.aliasTopTours, tourController.getAllTours); //prefill query string,use middleware aliasTopTours(execute before getAllTours) change query obj
 router
   .route('/')
   .get(tourController.getAllTours)
