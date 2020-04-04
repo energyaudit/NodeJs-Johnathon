@@ -320,6 +320,7 @@ const router = express.Router(); //by convention use router only not tourRouter,
 router
   .route('/top-5-cheap')
   .get(tourController.aliasTopTours, tourController.getAllTours); //prefill query string,use middleware aliasTopTours(execute before getAllTours) change query obj
+router.route('/tour-stats').get(tourController.getTourStats);
 router
   .route('/')
   .get(tourController.getAllTours)
