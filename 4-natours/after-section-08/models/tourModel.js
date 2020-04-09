@@ -94,16 +94,10 @@ tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
-
-// tourSchema.pre('save', function(next) {
-//   console.log('Will save document...');
-//   next();
-// });
-
-// tourSchema.post('save', function(doc, next) {
-//   console.log(doc);
-//   next();
-// });
+tourSchema.post('save', function(doc, next) {//one para is document,one para is next,after all previoius middleware completed
+  console.log(doc);//no long has this keyword only finished document here
+  next();
+});
 
 // QUERY MIDDLEWARE
 // tourSchema.pre('find', function(next) {
