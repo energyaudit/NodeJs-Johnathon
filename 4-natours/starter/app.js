@@ -939,7 +939,7 @@
 //   console.log(`app running on port ${port}`);
 // });
 /////////////////////////////////
-/////////////////////////////////version 9,slip files into dedicated route module folder and 
+/////////////////////////////////version 9,slip files into dedicated route module folder and
 // const express = require('express');
 // const fs = require('fs');
 // const morgan = require('morgan');
@@ -961,7 +961,7 @@
 // const tours = JSON.parse(
 //   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 // ); //use fs here,so goto top require it
-// //route handler,folowing route handler all cut into route module 
+// //route handler,folowing route handler all cut into route module
 // const getAllTours = (req, res) => {
 //   console.log(req.requestTime);
 //   res.status(200).json({
@@ -1133,8 +1133,8 @@
 // const express = require('express');
 // // const fs = require('fs');//moved to tourRoutes.js
 // const morgan = require('morgan');
-// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
-// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this
+// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this
 
 // // 1) MIDDLEWARES
 
@@ -1154,7 +1154,7 @@
 // // const tours = JSON.parse(
 // //   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 // // ); //use fs here,so goto top require it
-// // //route handler,folowing route handler all cut into route module 
+// // //route handler,folowing route handler all cut into route module
 // // const getAllTours = (req, res) => {
 // //   console.log(req.requestTime);
 // //   res.status(200).json({
@@ -1280,7 +1280,6 @@
 // //   });
 // // };
 
-
 // //seperate handler and route to export and reuse later too
 // // 3) ROUTES
 //   app.use('/api/v1/tours', tourRouter);//all following lines replaced by these 2 lines now
@@ -1327,8 +1326,8 @@
 // const express = require('express');
 // // const fs = require('fs');//moved to tourRoutes.js
 // const morgan = require('morgan');
-// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
-// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this
+// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this
 
 // // 1) MIDDLEWARES
 
@@ -1361,8 +1360,8 @@
 // const express = require('express');
 // // const fs = require('fs');//moved to tourRoutes.js
 // const morgan = require('morgan');
-// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
-// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this
+// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this
 
 // // 1) MIDDLEWARES
 
@@ -1395,8 +1394,8 @@
 // const express = require('express');
 // // const fs = require('fs');//moved to tourRoutes.js
 // const morgan = require('morgan');
-// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
-// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this
+// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this
 
 // // 1) MIDDLEWARES
 
@@ -1423,22 +1422,110 @@
 
 //   ////////////////////////////////
 // /////////////////////////////////version 14,read environment from config.env
+// const express = require('express');
+// // const fs = require('fs');//moved to tourRoutes.js
+// const morgan = require('morgan');
+// const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this
+// const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this
+
+// // 1) MIDDLEWARES
+
+// const app = express(); //assign the function to app
+// app.use(morgan('dev'));//comment out and only use if env=development,if not comment out will have port 3000 already in use,so only one morgan allowed
+// console.log(process.env.NODE_ENV);
+// if (process.env.NODE_ENV === 'development') {
+//     app.use(morgan('dev'));
+//   }
+// app.use(express.json()); //middleware,modify the incoming data
+//  app.use(express.static(`${__dirname}/public`));//make static files have routes
+// app.use((req, res, next) => {
+//   //next is third parameter which next function in pipeline
+//   console.log('Hello from the middleware 👋');
+//   next();
+// }); //middleware declare should at top before others
+
+// app.use((req, res, next) => {
+//   req.requestTime = new Date().toISOString();
+//   next();
+// });
+
+// // 3) ROUTES
+//   app.use('/api/v1/tours', tourRouter);//all following lines replaced by these 2 lines now
+//   app.use('/api/v1/users', userRouter);
+
+// module.exports = app;
+//   ////////////////////////////////
+// /////////////////////////////////version 15,handle unhandled errors
+// const express = require('express');
+// // const fs = require('fs');//moved to tourRoutes.js
+// const morgan = require('morgan');
+// const tourRouter = require('./routes/tourRoutes'); //following tourRoutes lines will be replaced by this
+// const userRouter = require('./routes/userRoutes'); //following userRoutes lines will be replaced by this
+
+// // 1) MIDDLEWARES
+
+// const app = express(); //assign the function to app
+// app.use(morgan('dev')); //comment out and only use if env=development,if not comment out will have port 3000 already in use,so only one morgan allowed
+// console.log(process.env.NODE_ENV);
+// if (process.env.NODE_ENV === 'development') {
+//   app.use(morgan('dev'));
+// }
+// app.use(express.json()); //middleware,modify the incoming data
+// app.use(express.static(`${__dirname}/public`)); //make static files have routes
+// app.use((req, res, next) => {
+//   //next is third parameter which next function in pipeline
+//   console.log('Hello from the middleware 👋');
+//   next();
+// }); //middleware declare should at top before others
+
+// app.use((req, res, next) => {
+//   req.requestTime = new Date().toISOString();
+//   next();
+// });
+
+// // 3) ROUTES
+// app.use('/api/v1/tours', tourRouter); //all following lines replaced by these 2 lines now
+// app.use('/api/v1/users', userRouter);
+// app.all('*', (req, res, next) => {
+//   // next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+//   // res.status(404).json({
+//   //   status: 'fail',
+//   //   message: `Can't find ${req.originalUrl} on this server!'`
+//   // });
+//   const err = new Error(`Can't find ${req.originalUrl} on this server!'`);
+//   err.status = 'fail'; //status property
+//   err.statusCode = 404; //statusCode property
+//   next(err); //pass error to next middleware,so everywhre pass err will goto next line err handle middleware function
+// });
+// app.use((err, req, res, next) => {//globalErrorHandler
+//   //4 arguments middleware,err first
+//   err.statusCode = err.statusCode || 500;
+//   err.status = err.status || 'error';
+//   res.status(err.statusCode).json({
+//     status: err.status,
+//     message: err.message
+//   });
+// });
+// module.exports = app;
+//   ////////////////////////////////
+// /////////////////////////////////version 16,handle errors,error class,refatoring,create appError.js file
 const express = require('express');
 // const fs = require('fs');//moved to tourRoutes.js
 const morgan = require('morgan');
-const tourRouter = require('./routes/tourRoutes');//following tourRoutes lines will be replaced by this 
-const userRouter = require('./routes/userRoutes');//following userRoutes lines will be replaced by this 
+const AppError = require('./utils/appError');
+const tourRouter = require('./routes/tourRoutes'); //following tourRoutes lines will be replaced by this
+const userRouter = require('./routes/userRoutes'); //following userRoutes lines will be replaced by this
 
 // 1) MIDDLEWARES
 
 const app = express(); //assign the function to app
-app.use(morgan('dev'));//comment out and only use if env=development,if not comment out will have port 3000 already in use,so only one morgan allowed
+app.use(morgan('dev')); //comment out and only use if env=development,if not comment out will have port 3000 already in use,so only one morgan allowed
 console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
-  }
+  app.use(morgan('dev'));
+}
 app.use(express.json()); //middleware,modify the incoming data
- app.use(express.static(`${__dirname}/public`));//make static files have routes
+app.use(express.static(`${__dirname}/public`)); //make static files have routes
 app.use((req, res, next) => {
   //next is third parameter which next function in pipeline
   console.log('Hello from the middleware 👋');
@@ -1451,10 +1538,28 @@ app.use((req, res, next) => {
 });
 
 // 3) ROUTES
-  app.use('/api/v1/tours', tourRouter);//all following lines replaced by these 2 lines now
-  app.use('/api/v1/users', userRouter);
+app.use('/api/v1/tours', tourRouter); //all following lines replaced by these 2 lines now
+app.use('/api/v1/users', userRouter);
+app.all('*', (req, res, next) => {
+  //following 4 lines commented out into AppError
+  // const err = new Error(`Can't find ${req.originalUrl} on this server!'`);
+  // err.status = 'fail'; //status property
+  // err.statusCode = 404; //statusCode property
+  // next(err); //pass error to next middleware,so everywhre pass err will goto next line err handle middleware function
+  next(new AppError(`Can't find ${req.originalUrl} on this server!'`), 404);
+});
+app.use((err, req, res, next) => {
+  //globalErrorHandler ,4 arguments middleware,err first
+  console.log(err.stack); //show where the error happened
 
-  module.exports=app;
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message
+  });
+});
+module.exports = app;
 /////////////////////////////////
 /////////////////////////////////version?
 // const express = require('express');
