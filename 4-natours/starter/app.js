@@ -1563,6 +1563,62 @@
 // module.exports = app;
 //////////////////////////////////
 ///////////////////////////////////version 17,,Better Errors and Refactoring,
+// const express = require('express');
+// // const fs = require('fs');//moved to tourRoutes.js
+// const morgan = require('morgan');
+// const AppError = require('./utils/appError');
+// const globalErrorHandler = require('./controllers/errorController');
+// const tourRouter = require('./routes/tourRoutes'); //following tourRoutes lines will be replaced by this
+// const userRouter = require('./routes/userRoutes'); //following userRoutes lines will be replaced by this
+
+// // 1) MIDDLEWARES
+
+// const app = express(); //assign the function to app
+// app.use(morgan('dev')); //comment out and only use if env=development,if not comment out will have port 3000 already in use,so only one morgan allowed
+// console.log('process.env.NODE_ENV is: ', process.env.NODE_ENV);
+// if (process.env.NODE_ENV === 'development') {
+//   app.use(morgan('dev'));
+// }
+// app.use(express.json()); //middleware,modify the incoming data
+// app.use(express.static(`${__dirname}/public`)); //make static files have routes
+// app.use((req, res, next) => {
+//   //next is third parameter which next function in pipeline
+//   console.log('Hello from the middleware 👋');
+//   next();
+// }); //middleware declare should at top before others
+
+// app.use((req, res, next) => {
+//   req.requestTime = new Date().toISOString();
+//   next();
+// });
+
+// // 3) ROUTES
+// app.use('/api/v1/tours', tourRouter); //all following lines replaced by these 2 lines now
+// app.use('/api/v1/users', userRouter);
+// app.all('*', (req, res, next) => {
+//   //following 4 lines commented out into AppError
+//   // const err = new Error(`Can't find ${req.originalUrl} on this server!'`);
+//   // err.status = 'fail'; //status property
+//   // err.statusCode = 404; //statusCode property
+//   // next(err); //pass error to next middleware,so everywhre pass err will goto next line err handle middleware function
+//   next(new AppError(`Can't find ${req.originalUrl} on this server!'`), 404);
+// });
+// //next step export following
+// app.use((err, req, res, next) => {
+//   //globalErrorHandler ,4 arguments middleware,err first
+//   console.log(err.stack); //show where the error happened
+
+//   err.statusCode = err.statusCode || 500;
+//   err.status = err.status || 'error';
+//   res.status(err.statusCode).json({
+//     status: err.status,
+//     message: err.message
+//   });
+// });
+// app.use(globalErrorHandler);
+// module.exports = app;
+//////////////////////////////////
+///////////////////////////////////version 18,,Better Errors and Refactoring,
 const express = require('express');
 // const fs = require('fs');//moved to tourRoutes.js
 const morgan = require('morgan');
@@ -1575,7 +1631,7 @@ const userRouter = require('./routes/userRoutes'); //following userRoutes lines 
 
 const app = express(); //assign the function to app
 app.use(morgan('dev')); //comment out and only use if env=development,if not comment out will have port 3000 already in use,so only one morgan allowed
-console.log(process.env.NODE_ENV);
+console.log('process.env.NODE_ENV is: ', process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
@@ -1603,18 +1659,18 @@ app.all('*', (req, res, next) => {
   // next(err); //pass error to next middleware,so everywhre pass err will goto next line err handle middleware function
   next(new AppError(`Can't find ${req.originalUrl} on this server!'`), 404);
 });
-//next step export following
-app.use((err, req, res, next) => {
-  //globalErrorHandler ,4 arguments middleware,err first
-  console.log(err.stack); //show where the error happened
+//commented out following
+// app.use((err, req, res, next) => {
+//   //globalErrorHandler ,4 arguments middleware,err first
+//   console.log(err.stack); //show where the error happened
 
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message
-  });
-});
+//   err.statusCode = err.statusCode || 500;
+//   err.status = err.status || 'error';
+//   res.status(err.statusCode).json({
+//     status: err.status,
+//     message: err.message
+//   });
+// });
 app.use(globalErrorHandler);
 module.exports = app;
 /////////////////////////////////

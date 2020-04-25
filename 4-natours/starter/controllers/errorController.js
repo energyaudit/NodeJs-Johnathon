@@ -87,6 +87,57 @@
 // };
 //////////////////////////////////
 ///////////////////////////////////version5,Errors Development vs Production,delete commented and in prod only send operation error ornot just simple
+// const sendErrorDev = (err, res) => {
+//   res.status(err.statusCode).json({
+//     status: err.status,
+//     error: err,
+//     message: err.message,
+//     stack: err.stack
+//   });
+// };
+
+// const sendErrorProd = (err, res) => {
+//   // Operational, trusted error: send message to client
+//   if (err.isOperational) {
+//     res.status(err.statusCode).json({
+//       status: err.status,
+//       message: err.message
+//     });
+//   } else {
+//     // Programming or other unknown error: don't leak error details
+//     // 1) Log error
+//     console.error('ERROR 💥', err);
+
+//     // 2) Send generic message
+//     res.status(500).json({
+//       status: 'error',
+//       message: 'Something went very wrong!'
+//     });
+//   }
+//   // follwing 3 lines move into err.isOperational branch
+//   // res.status(err.statusCode).json({
+//   //   status: err.status,
+//   //   message: err.message
+//   // });
+// };
+// module.exports = (err, req, res, next) => {
+//   console.log(err.stack); // show where the error happened
+//   err.statusCode = err.statusCode || 500;
+//   err.status = err.status || 'error';
+//   if (process.env.NODE_ENV === 'development') {
+//     sendErrorDev(err, res); //this function replaced following 6 lines
+//   } else if (process.env.NODE_ENV === 'production') {
+//     sendErrorProd(err, res); //this function replaced following 6 lines
+//   }
+// };
+//////////////////////////////////
+///////////////////////////////////version6,Handling Invalid Database IDs
+const AppError = require('./../utils/appError');
+
+const handleCastErrorDB = err => {
+  const message = `Invalid ${err.path}: ${err.value}.`;
+  return new AppError(message, 400);
+};
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -97,23 +148,42 @@ const sendErrorDev = (err, res) => {
 };
 
 const sendErrorProd = (err, res) => {
+  // Operational, trusted error: send message to client
   if (err.isOperational) {
+    res.status(err.statusCode).json({
+      status: err.status,
+      message: err.message
+    });
+    // Programming or other unknown error: don't leak error details
   } else {
+    // 1) Log error
+    console.error('ERROR 💥', err);
+
+    // 2) Send generic message
+    res.status(500).json({
+      status: 'error',
+      message: 'Something went very wrong!'
+    });
   }
   // follwing 3 lines move into err.isOperational branch
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message
-  });
+  // res.status(err.statusCode).json({
+  //   status: err.status,
+  //   message: err.message
+  // });
 };
 module.exports = (err, req, res, next) => {
+  // following 3 lines commented out
   console.log(err.stack); // show where the error happened
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
+  console.log('process.env.NODE_ENV is: ', process.env.NODE_ENV);
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res); //this function replaced following 6 lines
   } else if (process.env.NODE_ENV === 'production') {
-    sendErrorProd(error, res); //this function replaced following 6 lines
+    let error = { ...err }; //err will be use as para,so not use err anymore and create new one error,let means it will change,use destructor
+
+    if (error.name === 'CastError') error = handleCastErrorDB(error); //use error as para create new app error
+    sendErrorProd(err, res); //this function replaced following 6 lines
   }
 };
 //////////////////////////////////
